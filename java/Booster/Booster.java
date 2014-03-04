@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="Booster", name="Booster", version="1.7.2v1",dependencies="required-after:FML")
+@Mod(modid="Booster", name="Booster", version="1.7.2v1",dependencies="required-after:FML", useMetadata = true)
 //@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"Booster"}, packetHandler=PacketHandler.class)
 public class Booster
 {
