@@ -18,10 +18,13 @@ public class ItemBooster extends ItemArmor {
 		String st = "";
         if (stack != null || stack.getItem() instanceof ItemBooster) {
             ItemBooster booster = (ItemBooster)stack.getItem();
-            if(booster.boostername.equals("Booster08") /*stack.getItem() == Booster.Booster08*/)
-                st = (!layer.equals(""))? Booster.TextureDomain + Booster.Armor08_1:Booster.TextureDomain + Booster.Armor08_2;
-            else if(booster.boostername.equals("Booster20")/*stack.getItem() == Booster.Booster20*/)
-                st = (!layer.equals(""))? Booster.TextureDomain + Booster.Armor20_1:Booster.TextureDomain + Booster.Armor20_2;
+            if(booster.boostername.equals("Booster08")) {
+//                st = (!layer.equals(""))? Booster.TextureDomain + Booster.Armor08_1:Booster.TextureDomain + Booster.Armor08_2;
+                st = Booster.TextureDomain + Booster.Armor08_1;
+            } else if(booster.boostername.equals("Booster20")){
+//                st = (!layer.equals(""))? Booster.TextureDomain + Booster.Armor20_1:Booster.TextureDomain + Booster.Armor20_2;
+                st = Booster.TextureDomain + Booster.Armor20_1;
+            }
         }
     	return st;
 	}
