@@ -10,7 +10,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy
 {
-	public static KeyBinding boostKey = new KeyBinding("Key.BoosterSwitch",Keyboard.KEY_B, "Booster:Key.BoosterSwitch");
+	public static KeyBinding boostKey = new KeyBinding("Key.BoosterSwitch",Keyboard.KEY_B, "Booster");
 	public static boolean[] repeat = new boolean[]{false, false, false};
 	@Override
 	public void registerClientInformation()
