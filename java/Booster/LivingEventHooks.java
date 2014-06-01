@@ -1,22 +1,18 @@
 package Booster;
 
-import java.io.DataOutputStream;
-
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-
-import com.google.common.io.ByteArrayDataInput;
-
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 
 public class LivingEventHooks
@@ -29,7 +25,8 @@ public class LivingEventHooks
 	public void KeyPressEvent(KeyInputEvent event)
 	{
 		if (ClientProxy.boostKey.isPressed()) {
-			this.toggle = true;
+//			this.toggle = true;
+            boostKeyCheck(FMLClientHandler.instance().getClientPlayerEntity());
 		}
 	}
 	@SubscribeEvent
@@ -39,13 +36,13 @@ public class LivingEventHooks
 		{
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
 
-			if(player.worldObj.isRemote)
-			{
-				if(toggle) {
-					boostKeyCheck(player);
-					toggle = false;
-				}
-			}
+//			if(player.worldObj.isRemote)
+//			{
+//				if(toggle) {
+//					boostKeyCheck(player);
+//					toggle = false;
+//				}
+//			}
 			boost(player, player.worldObj);
 		}
 	}
@@ -53,7 +50,7 @@ public class LivingEventHooks
 	public void boostKeyCheck(EntityPlayer player)
 	{
 		boosterSwitch =!boosterSwitch;
-		String switchdata="";
+		String switchdata;
 		if(boosterSwitch)
 		{
 			switchdata ="ON";
@@ -62,8 +59,9 @@ public class LivingEventHooks
 		{
 			switchdata ="OFF";
 		}
-		player.addChatMessage(new ChatComponentTranslation("BoosterSwitch-" + switchdata, new Object[0]));
-		Booster.packetPipeline.sendToServer(new KeyHandlingPacket(boosterSwitch));
+		player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchdata)));
+        PacketHandler.INSTANCE.sendToServer(new MessageKeyPressed(this.boosterSwitch));
+//		Booster.packetPipeline.sendToServer(new KeyHandlingPacket(boosterSwitch));
 	}
 	public void boost(EntityPlayer ep, World world)
 	{
@@ -142,7 +140,8 @@ public class LivingEventHooks
 								this.spawnCloud = true;
 							}
 						}
-						Booster.packetPipeline.sendToServer(new BoosterCloudPacket(this.spawnCloud));
+                        PacketHandler.INSTANCE.sendToServer(new MessageSpawnCloud(spawnCloud));
+//						Booster.packetPipeline.sendToServer(new BoosterCloudPacket(this.spawnCloud));
 					}
 					if(this.spawnCloud)
 						commonprocess(ep,world);
@@ -172,28 +171,4 @@ public class LivingEventHooks
 	{
 		return Booster.movement * 0.5d;
 	}
- 	public void readPacketData(ByteArrayDataInput data)
- 	{
- 		try
- 		{
- 			this.spawnCloud = data.readBoolean();
- 			this.boosterSwitch = data.readBoolean();
- 		}
- 		catch (Exception e)
- 		{
- 			e.printStackTrace();
- 		}
- 	}
- 	public void writePacketData(DataOutputStream dos)
- 	{
- 		try
- 		{
- 			dos.writeBoolean(this.spawnCloud);
- 			dos.writeBoolean(boosterSwitch);
- 		}
- 		catch (Exception e)
- 		{
- 			e.printStackTrace();
- 		}
- 	}
 }

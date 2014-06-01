@@ -11,7 +11,7 @@ public class ItemBooster extends ItemArmor {
 		this.setTextureName(Booster.TextureDomain + name);
 		boostername = name;
 	}
-	//うまく動かない。
+
 	@Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String layer)
 	{
