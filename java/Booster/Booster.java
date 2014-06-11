@@ -1,5 +1,6 @@
 package Booster;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -14,7 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid="Booster", name="Booster", version="1.7.2v2",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
+import java.util.logging.Logger;
+
+@Mod(modid="Booster", name="Booster", version="1.7.2v3",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
 public class Booster
 {
 //	public static int BoosterID;
@@ -34,12 +37,14 @@ public class Booster
 //	public static final String Armor08_2 = "textures/armor/AR08_2.png";
 	public static final String Armor20_1 = "textures/armor/AR20_1.png";
 //	public static final String Armor20_2 = "textures/armor/AR20_2.png";
-	public static LivingEventHooks livingeventhooks;
+	public static LivingEventHooks livingeventhooks = new LivingEventHooks();
 
 	@Mod.Instance("Booster")
 	public static Booster instance;
 	@SidedProxy(clientSide = "Booster.ClientProxy", serverSide = "Booster.CommonProxy")
 	public static CommonProxy proxy;
+
+    public static final Logger LOGGER = Logger.getLogger("Booster");
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -48,7 +53,7 @@ public class Booster
 		config.load();
 //		BoosterID = config.get(Configuration.CATEGORY_ITEM, "BoosterID", 20000).getInt();
 		BoostPower = config.get(Configuration.CATEGORY_GENERAL, "BoostPower", 25).getInt();
-		BoosterDefaultSwitch = config.get(Configuration.CATEGORY_GENERAL, "BoostPower", true).getBoolean(true);
+		BoosterDefaultSwitch = config.get(Configuration.CATEGORY_GENERAL, "BoosterDefaultSwitch", true).getBoolean(true);
 		Alwaysflying = config.get(Configuration.CATEGORY_GENERAL, "Alwaysflying", false).getBoolean(false);
 		movement = config.get(Configuration.CATEGORY_GENERAL, "movement", 1d).getDouble(1);
 		config.save();
@@ -63,8 +68,9 @@ public class Booster
 	{
 		proxy.registerClientInformation();
 
-		livingeventhooks = new LivingEventHooks();
+//		livingeventhooks = new LivingEventHooks();
 		MinecraftForge.EVENT_BUS.register(livingeventhooks);
+        FMLCommonHandler.instance().bus().register(livingeventhooks);
 		GameRegistry.addRecipe(new ItemStack(Booster08),
 				 "XRX","XPX","X X",
 			'X',Items.iron_ingot,

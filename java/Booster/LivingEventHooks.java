@@ -1,14 +1,13 @@
 package Booster;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -19,13 +18,11 @@ public class LivingEventHooks
 {
 	private int CanBoost = Booster.BoostPower;
 	public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
-	private boolean toggle = false;
 	public boolean spawnCloud = false;
 	@SubscribeEvent
 	public void KeyPressEvent(KeyInputEvent event)
 	{
 		if (ClientProxy.boostKey.isPressed()) {
-//			this.toggle = true;
             boostKeyCheck(FMLClientHandler.instance().getClientPlayerEntity());
 		}
 	}
@@ -35,14 +32,6 @@ public class LivingEventHooks
 		if(event.entityLiving != null && event.entityLiving instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
-
-//			if(player.worldObj.isRemote)
-//			{
-//				if(toggle) {
-//					boostKeyCheck(player);
-//					toggle = false;
-//				}
-//			}
 			boost(player, player.worldObj);
 		}
 	}
@@ -50,124 +39,162 @@ public class LivingEventHooks
 	public void boostKeyCheck(EntityPlayer player)
 	{
 		boosterSwitch =!boosterSwitch;
-		String switchdata;
-		if(boosterSwitch)
-		{
-			switchdata ="ON";
+		String switchData;
+		if(boosterSwitch) {
+			switchData ="ON";
+		} else {
+			switchData ="OFF";
 		}
-		else
-		{
-			switchdata ="OFF";
-		}
-		player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchdata)));
+		player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchData)));
         PacketHandler.INSTANCE.sendToServer(new MessageKeyPressed(this.boosterSwitch));
-//		Booster.packetPipeline.sendToServer(new KeyHandlingPacket(boosterSwitch));
 	}
 	public void boost(EntityPlayer ep, World world)
 	{
-		if(ep.inventory.armorInventory[2]!=null || Booster.Alwaysflying)
-		{
-			if(!ep.onGround && boosterSwitch)
-			{
-				boolean canjump = false;
-				try {
-					canjump =(Integer)ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, ep, 57)==0;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+//        Booster.LOGGER.info(String.format("falldistance %f Side Client : %b", ep.fallDistance, ep.worldObj.isRemote));
+		if(checkBoosterWearing(ep)) {
+			if(!ep.onGround && boosterSwitch) {
+//				boolean enableToJump = false;
+//				try {
+//					enableToJump = (Integer)ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, ep, 57) == 0;
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
 
-				if(CanBoost > 0 || Booster.Alwaysflying)
-				{
-					if(world.isRemote)
-					{
-						EntityPlayerSP epsp = (EntityPlayerSP) ep;
-						this.spawnCloud = false;
-						if(Booster.Alwaysflying ||ep.inventory.armorInventory[2].getItem() == Booster.Booster20)
-						{
-							if(epsp.movementInput.moveForward > 0)
-							{
-								float f1 = ep.rotationYaw * 0.01745329F;
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionX -= MathHelper.sin(f1) * getmove();
-								ep.motionZ += MathHelper.cos(f1) * getmove();
-								this.spawnCloud = true;
-							}
-							else if(epsp.movementInput.moveForward < 0)
-							{
-								float f1 = ep.rotationYaw * 0.01745329F;
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionX -= MathHelper.sin(f1) * -getmove();
-								ep.motionZ += MathHelper.cos(f1) * -getmove();
-								this.spawnCloud = true;
-							}
-							else if(epsp.movementInput.moveStrafe < 0)
-							{
-								float f1 = ep.rotationYaw * 0.01745329F;
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionX -= MathHelper.sin(f1+(float)(Math.PI/2)) * getmove();
-								ep.motionZ += MathHelper.cos(f1+(float)(Math.PI/2)) * getmove();
-								this.spawnCloud = true;
-							}
-							else if(epsp.movementInput.moveStrafe > 0)
-							{
-								float f1 = ep.rotationYaw * 0.01745329F;
-								ep.motionY=ep.motionX=ep.motionZ =0;
-
-								ep.motionX -= MathHelper.sin(f1-(float)(Math.PI/2)) * getmove();
-								ep.motionZ += MathHelper.cos(f1-(float)(Math.PI/2)) * getmove();
-								this.spawnCloud = true;
-							}
-
-							else if(epsp.movementInput.jump && canjump)
-							{
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionY += getmove();
-								this.spawnCloud = true;
-							}
-							else if(epsp.movementInput.sneak)
-							{
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionY -= getmove();
-								this.spawnCloud = true;
-							}
-						}
-						else if(ep.inventory.armorInventory[2].getItem() == Booster.Booster08)
-						{
-							if(epsp.movementInput.jump && !ep.onGround && canjump)
-							{
-								ep.motionY=ep.motionX=ep.motionZ =0;
-								ep.motionY += getmove();
-								this.spawnCloud = true;
-							}
+				if(CanBoost > 0 || Booster.Alwaysflying) {
+					if(world.isRemote) {
+						if(Booster.Alwaysflying || isBooster20(ep)) {
+                            this.spawnCloud = false;
+                            moveXZBooster20(ep);
+                            moveYBooster20(ep);
+//                            moveBooster20old(ep, enableToJump);
+						} else if(isBooster08(ep)) {
+                            moveBooster08(ep);
 						}
                         PacketHandler.INSTANCE.sendToServer(new MessageSpawnCloud(spawnCloud));
-//						Booster.packetPipeline.sendToServer(new BoosterCloudPacket(this.spawnCloud));
 					}
-					if(this.spawnCloud)
-						commonprocess(ep,world);
-				}
-				else
-				{
-					world.spawnParticle("smoke", ep.posX, ep.posY + 0.1D, ep.posZ, 0.0D, 0.0D, 0.0D);
-				}
-			}
-			else if(boosterSwitch)
-			{
+                    if(this.spawnCloud)
+						commonProcess(ep, world);
+//				} else {
+//					world.spawnParticle("smoke", ep.posX, ep.posY + 0.1D, ep.posZ, 0.0D, 0.0D, 0.0D);
+				} else {
+                    this.spawnCloud = false;
+                }
+			} else if(boosterSwitch) {
 				CanBoost = Booster.BoostPower;
 			}
-			if((ep.inventory.armorInventory[2].getItem() == Booster.Booster08 || ep.inventory.armorInventory[2].getItem() == Booster.Booster20) && ep.isSneaking())
-			{
-				ep.fallDistance = 0F;
-			}
+            if(checkBoosterWearing(ep) && ep.isSneaking()) {
+                ep.fallDistance = 0.0F;
+            }
 		}
 	}
-	private void commonprocess(EntityPlayer ep,World world)
+
+    @SideOnly(Side.CLIENT)
+    private void moveXZBooster20(EntityPlayer player) {
+        EntityPlayerSP playerSP = (EntityPlayerSP)player;
+        float moveForward = playerSP.movementInput.moveForward;
+        float moveStrafe = playerSP.movementInput.moveStrafe;
+        float f1 = player.rotationYaw * (2 * (float)Math.PI / 360);
+        if (moveForward != 0 || moveStrafe != 0) {
+            player.motionY = player.motionX = player.motionZ = 0;
+            this.spawnCloud = true;
+        }
+
+        player.motionX -= MathHelper.sin(f1 - (float)(Math.PI / 2) * Math.signum(moveStrafe)) * getMovementFactor() * signumZeroException(moveForward, moveStrafe);
+        player.motionZ += MathHelper.cos(f1 - (float)(Math.PI / 2) * Math.signum(moveStrafe)) * getMovementFactor() * signumZeroException(moveForward, moveStrafe);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void moveYBooster20(EntityPlayer player) {
+        EntityPlayerSP playerSP = (EntityPlayerSP)player;
+        boolean enableToJump = playerSP.movementInput.jump;
+        if (playerSP.movementInput.jump || playerSP.movementInput.sneak) {
+            player.motionY = player.motionX = player.motionZ = 0;
+            this.spawnCloud = true;
+        }
+        if (enableToJump) {
+            player.motionY += getMovementFactor();
+        } else if (playerSP.movementInput.sneak) {
+            player.motionY -= getMovementFactor();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void moveBooster08(EntityPlayer player) {
+        EntityPlayerSP playerSP = (EntityPlayerSP) player;
+        boolean enableToJump = playerSP.movementInput.jump;
+        if(!player.onGround && enableToJump) {
+            player.motionY = player.motionX = player.motionZ = 0;
+            player.motionY += getMovementFactor();
+            this.spawnCloud = true;
+        }
+    }
+
+    @Deprecated
+    @SideOnly(Side.CLIENT)
+    private void moveBooster20old(EntityPlayer ep, boolean enableToJump) {
+        EntityPlayerSP epsp = (EntityPlayerSP) ep;
+        if(epsp.movementInput.moveForward > 0) {
+            float f1 = ep.rotationYaw * (2 * (float)Math.PI / 360);
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionX -= MathHelper.sin(f1) * getMovementFactor();
+            ep.motionZ += MathHelper.cos(f1) * getMovementFactor();
+            this.spawnCloud = true;
+        } else if(epsp.movementInput.moveForward < 0) {
+            float f1 = ep.rotationYaw * (2 * (float)Math.PI / 360);
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionX -= MathHelper.sin(f1) * -getMovementFactor();
+            ep.motionZ += MathHelper.cos(f1) * -getMovementFactor();
+            this.spawnCloud = true;
+        } else if(epsp.movementInput.moveStrafe < 0) {
+            float f1 = ep.rotationYaw * (2 * (float)Math.PI / 360);
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionX -= MathHelper.sin(f1 + (float)(Math.PI / 2)) * getMovementFactor();
+            ep.motionZ += MathHelper.cos(f1 + (float)(Math.PI / 2)) * getMovementFactor();
+            this.spawnCloud = true;
+        } else if(epsp.movementInput.moveStrafe > 0) {
+            float f1 = ep.rotationYaw * (2 * (float)Math.PI / 360);
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionX -= MathHelper.sin(f1 - (float)(Math.PI / 2)) * getMovementFactor();
+            ep.motionZ += MathHelper.cos(f1 - (float)(Math.PI / 2)) * getMovementFactor();
+            this.spawnCloud = true;
+        } else if(epsp.movementInput.jump && enableToJump) {
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionY += getMovementFactor();
+            this.spawnCloud = true;
+        } else if(epsp.movementInput.sneak) {
+            ep.motionY=ep.motionX=ep.motionZ =0;
+            ep.motionY -= getMovementFactor();
+            this.spawnCloud = true;
+        }
+    }
+
+    private float signumZeroException(float f, float check) {
+        return (check != 0.0f && f == 0.0f) ? 1.0f : Math.signum(f);
+    }
+
+    private boolean isBooster08(EntityPlayer player) {
+        ItemStack chestArmor = player.getCurrentArmor(2);
+        return chestArmor != null && chestArmor.getItem() == Booster.Booster08;
+    }
+
+    private boolean isBooster20(EntityPlayer player) {
+        ItemStack chestArmor = player.getCurrentArmor(2);
+        return chestArmor != null && chestArmor.getItem() == Booster.Booster20;
+    }
+
+    private boolean checkBoosterWearing (EntityPlayer player) {
+        ItemStack chestArmor = player.getCurrentArmor(2);
+        return !player.capabilities.isCreativeMode && (Booster.Alwaysflying || (chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
+    }
+
+	private void commonProcess(EntityPlayer ep, World world)
 	{
 		world.spawnParticle("cloud", ep.posX, ep.posY + 0.1D, ep.posZ, 0.0D, 0.0D, 0.0D);
 		CanBoost--;
 		ep.fallDistance = 0F;
 	}
-	private double getmove()
+
+	private double getMovementFactor()
 	{
 		return Booster.movement * 0.5d;
 	}

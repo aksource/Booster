@@ -31,7 +31,7 @@ public class MessageSpawnCloud implements IMessage, IMessageHandler<MessageSpawn
 
     @Override
     public IMessage onMessage(MessageSpawnCloud message, MessageContext ctx) {
-        Booster.livingeventhooks.spawnCloud = this.spawnCloud;
+        Booster.livingeventhooks.spawnCloud = message.spawnCloud;
         return null;
     }
 }
