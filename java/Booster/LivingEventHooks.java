@@ -18,7 +18,8 @@ public class LivingEventHooks
 {
 	private int CanBoost = Booster.BoostPower;
 	public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
-	public boolean spawnCloud = false;
+	public boolean spawnCloud;
+
 	@SubscribeEvent
 	public void KeyPressEvent(KeyInputEvent event)
 	{
@@ -26,6 +27,7 @@ public class LivingEventHooks
             boostKeyCheck(FMLClientHandler.instance().getClientPlayerEntity());
 		}
 	}
+
 	@SubscribeEvent
 	public void LivingUpdate(LivingUpdateEvent event)
 	{
@@ -35,30 +37,27 @@ public class LivingEventHooks
 			boost(player, player.worldObj);
 		}
 	}
+
 	@SideOnly(Side.CLIENT)
 	public void boostKeyCheck(EntityPlayer player)
 	{
-		boosterSwitch =!boosterSwitch;
-		String switchData;
-		if(boosterSwitch) {
-			switchData ="ON";
-		} else {
-			switchData ="OFF";
-		}
-		player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchData)));
-        PacketHandler.INSTANCE.sendToServer(new MessageKeyPressed(this.boosterSwitch));
-	}
-	public void boost(EntityPlayer ep, World world)
+        if (player != null) {
+            boosterSwitch = !boosterSwitch;
+            String switchData;
+            if(boosterSwitch) {
+                switchData = "ON";
+            } else {
+                switchData = "OFF";
+            }
+            player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchData)));
+            PacketHandler.INSTANCE.sendToServer(new MessageKeyPressed(this.boosterSwitch));
+        }
+    }
+
+	private void boost(EntityPlayer ep, World world)
 	{
-//        Booster.LOGGER.info(String.format("falldistance %f Side Client : %b", ep.fallDistance, ep.worldObj.isRemote));
 		if(checkBoosterWearing(ep)) {
 			if(!ep.onGround && boosterSwitch) {
-//				boolean enableToJump = false;
-//				try {
-//					enableToJump = (Integer)ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, ep, 57) == 0;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
 
 				if(CanBoost > 0 || Booster.Alwaysflying) {
 					if(world.isRemote) {
