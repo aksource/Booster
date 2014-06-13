@@ -61,8 +61,8 @@ public class LivingEventHooks
 
 				if(CanBoost > 0 || Booster.Alwaysflying) {
 					if(world.isRemote) {
+                        this.spawnCloud = false;
 						if(Booster.Alwaysflying || isBooster20(ep)) {
-                            this.spawnCloud = false;
                             moveXZBooster20(ep);
                             moveYBooster20(ep);
 //                            moveBooster20old(ep, enableToJump);
