@@ -17,7 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.util.logging.Logger;
 
-@Mod(modid="Booster", name="Booster", version="1.7.2v3",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
+@Mod(modid="Booster", name="Booster", version="@VERSION@",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
 public class Booster
 {
 	public static Item Booster08;
