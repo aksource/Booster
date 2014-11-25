@@ -1,6 +1,5 @@
 package Booster;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -67,9 +66,7 @@ public class Booster
 	{
 		proxy.registerClientInformation();
 
-//		livingeventhooks = new LivingEventHooks();
 		MinecraftForge.EVENT_BUS.register(livingeventhooks);
-        FMLCommonHandler.instance().bus().register(livingeventhooks);
 		GameRegistry.addRecipe(new ItemStack(Booster08),
                 "XRX","XPX","X X",
                 'X',Items.iron_ingot,

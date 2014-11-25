@@ -1,14 +1,11 @@
 package Booster;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -17,16 +14,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 public class LivingEventHooks
 {
 	private int CanBoost = Booster.BoostPower;
-	public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
+    public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
 	public boolean spawnCloud;
-
-	@SubscribeEvent
-	public void KeyPressEvent(KeyInputEvent event)
-	{
-		if (ClientProxy.boostKey.isPressed()) {
-            boostKeyCheck(FMLClientHandler.instance().getClientPlayerEntity());
-		}
-	}
 
 	@SubscribeEvent
 	public void LivingUpdate(LivingUpdateEvent event)
@@ -38,21 +27,6 @@ public class LivingEventHooks
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void boostKeyCheck(EntityPlayer player)
-	{
-        if (player != null) {
-            boosterSwitch = !boosterSwitch;
-            String switchData;
-            if(boosterSwitch) {
-                switchData = "ON";
-            } else {
-                switchData = "OFF";
-            }
-            player.addChatMessage(new ChatComponentText(String.format("BoosterSwitch - %s", switchData)));
-            PacketHandler.INSTANCE.sendToServer(new MessageKeyPressed(this.boosterSwitch));
-        }
-    }
 
 	private void boost(EntityPlayer ep, World world)
 	{
