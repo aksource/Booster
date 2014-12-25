@@ -1,10 +1,10 @@
 package Booster;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 @Mod(modid="Booster", name="Booster", version="@VERSION@",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
 public class Booster
 {
+    public static final String MOD_ID = "Booster";
 	public static Item Booster08;
 	public static Item Booster20;
 
