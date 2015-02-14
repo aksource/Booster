@@ -38,7 +38,7 @@ public class LivingEventHooks
             if(!ep.onGround && boosterSwitch) {
 
 				if(boostPower > 0 || Booster.Alwaysflying) {
-					if(world.isRemote) {
+					if(world.isRemote && ep instanceof EntityPlayerSP) {
                         this.spawnCloud = false;
 						if(Booster.Alwaysflying || isBooster20(ep)) {
                             moveXZBooster20(ep);
