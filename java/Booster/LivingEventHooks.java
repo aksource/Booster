@@ -4,6 +4,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -13,7 +15,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class LivingEventHooks
 {
-	private int CanBoost = Booster.BoostPower;
+	private int boostPower = Booster.BoostPower;
     public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
 	public boolean spawnCloud;
 
@@ -31,9 +33,11 @@ public class LivingEventHooks
 	private void boost(EntityPlayer ep, World world)
 	{
 		if(checkBoosterWearing(ep)) {
-			if(!ep.onGround && boosterSwitch) {
+            int durability = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, ep.getCurrentArmor(2));
+//
+            if(!ep.onGround && boosterSwitch) {
 
-				if(CanBoost > 0 || Booster.Alwaysflying) {
+				if(boostPower > 0 || Booster.Alwaysflying) {
 					if(world.isRemote) {
                         this.spawnCloud = false;
 						if(Booster.Alwaysflying || isBooster20(ep)) {
@@ -53,7 +57,7 @@ public class LivingEventHooks
                     this.spawnCloud = false;
                 }
 			} else if(boosterSwitch) {
-				CanBoost = Booster.BoostPower;
+				boostPower = Booster.BoostPower * (durability + 1);
 			}
             if(checkBoosterWearing(ep) && ep.isSneaking()) {
                 ep.fallDistance = 0.0F;
@@ -163,7 +167,7 @@ public class LivingEventHooks
 	private void commonProcess(EntityPlayer ep, World world)
 	{
 		world.spawnParticle("cloud", ep.posX, ep.posY + 0.1D, ep.posZ, 0.0D, 0.0D, 0.0D);
-		CanBoost--;
+		boostPower--;
 		ep.fallDistance = 0F;
 	}
 
