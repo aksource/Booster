@@ -27,7 +27,7 @@ public class Booster
 
 	public static boolean BoosterDefaultSwitch;
 
-	public static boolean Alwaysflying;
+//	public static boolean Alwaysflying;
 
 
 	public static double movement;
@@ -52,7 +52,7 @@ public class Booster
 		config.load();
 		BoostPower = config.get(Configuration.CATEGORY_GENERAL, "BoostPower", 25).getInt();
 		BoosterDefaultSwitch = config.get(Configuration.CATEGORY_GENERAL, "BoosterDefaultSwitch", true).getBoolean(true);
-		Alwaysflying = config.get(Configuration.CATEGORY_GENERAL, "Alwaysflying", false).getBoolean(false);
+//		Alwaysflying = config.get(Configuration.CATEGORY_GENERAL, "Alwaysflying", false).getBoolean(false);
 		movement = config.get(Configuration.CATEGORY_GENERAL, "movement", 1d).getDouble(1);
 		config.save();
 		Booster08 = new ItemBooster(ItemArmor.ArmorMaterial.IRON ,2,1, "Booster08").setUnlocalizedName(TextureDomain + "Booster08").setCreativeTab(CreativeTabs.tabCombat);

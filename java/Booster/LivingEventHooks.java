@@ -16,12 +16,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LivingEventHooks
 {
-	private int boostPower;
+	private int boostPower = Booster.BoostPower;
     public boolean boosterSwitch = Booster.BoosterDefaultSwitch;
 	public boolean spawnCloud;
 
 	@SubscribeEvent
-	public void LivingUpdate(LivingUpdateEvent event)
+	public void doLivingUpdate(LivingUpdateEvent event)
 	{
 		if(event.entityLiving != null && event.entityLiving instanceof EntityPlayer)
 		{
@@ -35,15 +35,13 @@ public class LivingEventHooks
 	{
 		if(checkBoosterWearing(ep)) {
             int durability = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, ep.getCurrentArmor(2));
-            if (boostPower <= 0) {
-                boostPower = Booster.BoostPower * (durability + 1);
-            }
+
 			if(!ep.onGround && boosterSwitch) {
 
-				if(boostPower > 0 || Booster.Alwaysflying) {
-					if(world.isRemote) {
+				if(boostPower > 0/* || Booster.Alwaysflying*/) {
+					if(world.isRemote && ep instanceof EntityPlayerSP) {
                         this.spawnCloud = false;
-						if(Booster.Alwaysflying || isBooster20(ep)) {
+						if(/*Booster.Alwaysflying || */isBooster20(ep)) {
                             moveXZBooster20(ep);
                             moveYBooster20(ep);
 //                            moveBooster20old(ep, enableToJump);
@@ -164,7 +162,7 @@ public class LivingEventHooks
 
     private boolean checkBoosterWearing (EntityPlayer player) {
         ItemStack chestArmor = player.getCurrentArmor(2);
-        return !player.capabilities.isCreativeMode && (Booster.Alwaysflying || (chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
+        return !player.capabilities.isCreativeMode && (/*Booster.Alwaysflying || */(chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
     }
 
 	private void commonProcess(EntityPlayer ep, World world)
