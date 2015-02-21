@@ -12,7 +12,6 @@ public class PacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("booster");
 
     public static void init() {
-        INSTANCE.registerMessage(MessageKeyPressed.class, MessageKeyPressed.class, 0, Side.SERVER);
-        INSTANCE.registerMessage(MessageSpawnCloud.class, MessageSpawnCloud.class, 1, Side.SERVER);
+        INSTANCE.registerMessage(MessageSpawnCloud.class, MessageSpawnCloud.class, 0, Side.SERVER);
     }
 }
