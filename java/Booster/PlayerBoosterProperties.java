@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 /**
- * Created by AKIRA on 15/02/15.
+ * Created by A.K. on 15/02/15.
  */
 public class PlayerBoosterProperties implements IExtendedEntityProperties {
     public final static String EXT_PROP_NAME = "Booster:BoosterData";
