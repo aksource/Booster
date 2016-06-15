@@ -16,10 +16,18 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.util.logging.Logger;
 
-@Mod(modid="Booster", name="Booster", version="@VERSION@",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
+@Mod(modid=Booster.MOD_ID,
+		name=Booster.MOD_NAME,
+        version=Booster.MOD_VERSION,
+        dependencies=Booster.MOD_DEPENDENCIES,
+        useMetadata = true,acceptedMinecraftVersions = Booster.MOD_MC_VERSION)
 public class Booster
 {
     public static final String MOD_ID = "Booster";
+    public static final String MOD_NAME = "Booster";
+    public static final String MOD_VERSION = "@VERSION@";
+    public static final String MOD_DEPENDENCIES = "required-after:Forge@[11.14.0.1237,)";
+    public static final String MOD_MC_VERSION = "[1.8,1.8.9]";
 	public static Item Booster08;
 	public static Item Booster20;
 
