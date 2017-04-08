@@ -8,7 +8,6 @@ public class ItemBooster extends ItemArmor {
 	public String boostername;
 	public ItemBooster(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int par3, int par4, String name) {
 		super(par2EnumArmorMaterial, par3, par4);
-		this.setTextureName(Booster.TextureDomain + name);
 		boostername = name;
 	}
 

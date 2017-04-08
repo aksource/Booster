@@ -1,10 +1,10 @@
 package Booster;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,9 +16,18 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.util.logging.Logger;
 
-@Mod(modid="Booster", name="Booster", version="@VERSION@",dependencies="required-after:Forge@[10.12.1.1090,)", useMetadata = true)
+@Mod(modid=Booster.MOD_ID,
+		name=Booster.MOD_NAME,
+        version=Booster.MOD_VERSION,
+        dependencies=Booster.MOD_DEPENDENCIES,
+        useMetadata = true,acceptedMinecraftVersions = Booster.MOD_MC_VERSION)
 public class Booster
 {
+    public static final String MOD_ID = "Booster";
+    public static final String MOD_NAME = "Booster";
+    public static final String MOD_VERSION = "@VERSION@";
+    public static final String MOD_DEPENDENCIES = "required-after:Forge@[11.14.0.1237,)";
+    public static final String MOD_MC_VERSION = "[1.8,1.8.9]";
 	public static Item Booster08;
 	public static Item Booster20;
 
@@ -26,7 +35,7 @@ public class Booster
 
 	public static boolean BoosterDefaultSwitch;
 
-	public static boolean Alwaysflying;
+//	public static boolean Alwaysflying;
 
 
 	public static double movement;
@@ -51,7 +60,7 @@ public class Booster
 		config.load();
 		BoostPower = config.get(Configuration.CATEGORY_GENERAL, "BoostPower", 25).getInt();
 		BoosterDefaultSwitch = config.get(Configuration.CATEGORY_GENERAL, "BoosterDefaultSwitch", true).getBoolean(true);
-		Alwaysflying = config.get(Configuration.CATEGORY_GENERAL, "Alwaysflying", false).getBoolean(false);
+//		Alwaysflying = config.get(Configuration.CATEGORY_GENERAL, "Alwaysflying", false).getBoolean(false);
 		movement = config.get(Configuration.CATEGORY_GENERAL, "movement", 1d).getDouble(1);
 		config.save();
 		Booster08 = new ItemBooster(ItemArmor.ArmorMaterial.IRON ,2,1, "Booster08").setUnlocalizedName(TextureDomain + "Booster08").setCreativeTab(CreativeTabs.tabCombat);
