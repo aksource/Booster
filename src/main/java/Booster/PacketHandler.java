@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
+ * PacketHandler
  * Created by A.K. on 14/05/31.
  */
 public class PacketHandler {

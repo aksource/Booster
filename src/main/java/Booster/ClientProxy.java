@@ -1,12 +1,12 @@
 package Booster;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 public class ClientProxy extends CommonProxy
@@ -16,8 +16,7 @@ public class ClientProxy extends CommonProxy
 	public void registerClientInformation()
 	{
 		ClientRegistry.registerKeyBinding(boostKey);
-
-        FMLCommonHandler.instance().bus().register(new ClientEventHooks());
+		MinecraftForge.EVENT_BUS.register(new ClientEventHooks());
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Booster.Booster08, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster08", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Booster.Booster20, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster20", "inventory"));
     }

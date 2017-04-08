@@ -1,8 +1,9 @@
 package Booster;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -10,8 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class LivingEventHooks {
     @SubscribeEvent
     public void onPlayerFall(LivingFallEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)event.entityLiving;
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
             if (checkBoosterWearing(player) && player.isSneaking()) {
                 event.setCanceled(true);
             }
@@ -19,14 +20,14 @@ public class LivingEventHooks {
     }
 
     @SubscribeEvent
-    public void onEntityConstructing(EntityEvent.EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer) {
-            PlayerBoosterProperties.register((EntityPlayer) event.entity);
+    public void onAttachCapability(AttachCapabilitiesEvent.Entity event) {
+        if (event.getEntity() instanceof EntityPlayer) {
+            event.addCapability(CapabilityPlayerBoosterStatusHandler.BOOSTER_STATUS, new PlayerBoosterStatusHandler.PlayerBoosterStatusImpl());
         }
     }
 
     public static boolean checkBoosterWearing (EntityPlayer player) {
-        ItemStack chestArmor = player.getCurrentArmor(2);
-        return !player.capabilities.isCreativeMode && (/*Booster.Alwaysflying || */(chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
+        ItemStack chestArmor = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        return !player.capabilities.isCreativeMode && ((chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
     }
 }

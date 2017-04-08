@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 
 /**
+ * ブースターのパーティクル生成用Messageクラス
  * Created by A.K. on 14/05/31.
  */
 public class MessageSpawnCloud implements IMessage, IMessageHandler<MessageSpawnCloud, IMessage> {
