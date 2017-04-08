@@ -1,6 +1,7 @@
 package Booster;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.World;
@@ -16,12 +17,13 @@ public class ClientProxy extends CommonProxy {
     public void registerClientInformation() {
         ClientRegistry.registerKeyBinding(boostKey);
         MinecraftForge.EVENT_BUS.register(new ClientEventHooks());
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Booster.Booster08, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster08", "inventory"));
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Booster.Booster20, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster20", "inventory"));
+        ItemModelMesher modelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+        modelMesher.register(Booster.Booster08, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster08", "inventory"));
+        modelMesher.register(Booster.Booster20, 0, new ModelResourceLocation(Booster.MOD_ID + ":" + "booster20", "inventory"));
     }
 
     @Override
     public World getClientWorld() {
-        return FMLClientHandler.instance().getClient().theWorld;
+        return FMLClientHandler.instance().getClient().world;
     }
 }

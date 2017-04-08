@@ -41,7 +41,7 @@ public class ClientEventHooks {
             } else {
                 switchData = "OFF";
             }
-            player.addChatMessage(new TextComponentString(String.format("BoosterSwitch - %s", switchData)));
+            player.sendMessage(new TextComponentString(String.format("BoosterSwitch - %s", switchData)));
             handler.setBoosterSwitch(boosterSwitch);
         }
     }
@@ -71,13 +71,13 @@ public class ClientEventHooks {
                     double dz = MathHelper.cos(f1);
                     if (isBooster08(playerSP)) {
                         moveCheck = moveBooster08(playerSP);
-                        playerSP.worldObj.spawnParticle(EnumParticleTypes.CLOUD, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz, 0.0D, 0.0D, 0.0D);
+                        playerSP.getEntityWorld().spawnParticle(EnumParticleTypes.CLOUD, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz, 0.0D, 0.0D, 0.0D);
                         PacketHandler.INSTANCE.sendToServer(new MessageSpawnCloud(moveCheck, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz));
                     }
 
                     if (isBooster20(playerSP)) {
                         moveCheck = moveXZBooster20(playerSP) || moveYBooster20(playerSP);
-                        playerSP.worldObj.spawnParticle(EnumParticleTypes.CLOUD, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz, 0.0D, 0.0D, 0.0D);
+                        playerSP.getEntityWorld().spawnParticle(EnumParticleTypes.CLOUD, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz, 0.0D, 0.0D, 0.0D);
                         PacketHandler.INSTANCE.sendToServer(new MessageSpawnCloud(moveCheck, playerSP.posX + dx, playerSP.posY + 0.1D, playerSP.posZ - dz));
                     }
                     playerSP.movementInput.updatePlayerMoveState();
@@ -135,12 +135,12 @@ public class ClientEventHooks {
 
     public static boolean isBooster08(EntityPlayer player) {
         ItemStack chestArmor = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        return chestArmor != null && chestArmor.getItem() == Booster.Booster08;
+        return !chestArmor.isEmpty() && chestArmor.getItem() == Booster.Booster08;
     }
 
     public static boolean isBooster20(EntityPlayer player) {
         ItemStack chestArmor = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        return chestArmor != null && chestArmor.getItem() == Booster.Booster20;
+        return !chestArmor.isEmpty() && chestArmor.getItem() == Booster.Booster20;
     }
 
     public static double getMovementFactor()

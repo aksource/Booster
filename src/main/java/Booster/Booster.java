@@ -23,14 +23,14 @@ import java.util.logging.Logger;
         dependencies = Booster.MOD_DEPENDENCIES,
         useMetadata = true, acceptedMinecraftVersions = Booster.MOD_MC_VERSION)
 public class Booster {
-    public static final String MOD_ID = "Booster";
+    public static final String MOD_ID = "booster";
     public static final String MOD_NAME = "Booster";
     public static final String MOD_VERSION = "@VERSION@";
-    public static final String MOD_DEPENDENCIES = "required-after:Forge";
-    public static final String MOD_MC_VERSION = "[1.9,1.10.2]";
+    public static final String MOD_DEPENDENCIES = "required-after:forge";
+    public static final String MOD_MC_VERSION = "[1.11,1.99.99]";
     public static final String TextureDomain = "booster:";
-    public static final String Armor08_1 = "textures/armor/AR08_1.png";
-    public static final String Armor20_1 = "textures/armor/AR20_1.png";
+    public static final String Armor08_1 = "textures/armor/armor_08_1.png";
+    public static final String Armor20_1 = "textures/armor/armor_20_1.png";
     public static final Logger LOGGER = Logger.getLogger("Booster");
     public static Item Booster08;
     public static Item Booster20;

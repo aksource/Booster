@@ -1,8 +1,6 @@
 package Booster;
 
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -23,9 +21,9 @@ public class ItemBooster extends ItemArmor {
 
 	@Override
 	@Nonnull
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(@Nonnull ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		String st = "";
-		if (stack != null || stack.getItem() instanceof ItemBooster) {
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemBooster) {
 			ItemBooster booster = (ItemBooster)stack.getItem();
 			if(booster.type == BoosterType.BOOSTER_08) {
 				st = Booster.TextureDomain + Booster.Armor08_1;
@@ -34,11 +32,5 @@ public class ItemBooster extends ItemArmor {
 			}
 		}
 		return st;
-	}
-
-	@Override
-	@Nonnull
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
-		return super.getArmorModel(entityLiving, itemStack, armorSlot, _default);
 	}
 }
