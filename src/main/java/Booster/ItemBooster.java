@@ -25,7 +25,7 @@ public class ItemBooster extends ItemArmor {
 	@Nonnull
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		String st = "";
-		if (stack != null || stack.getItem() instanceof ItemBooster) {
+		if (stack != null && stack.getItem() instanceof ItemBooster) {
 			ItemBooster booster = (ItemBooster)stack.getItem();
 			if(booster.type == BoosterType.BOOSTER_08) {
 				st = Booster.TextureDomain + Booster.Armor08_1;
