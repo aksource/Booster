@@ -46,7 +46,7 @@ public class MessageSpawnCloud implements IMessage, IMessageHandler<MessageSpawn
 
     @Override
     public IMessage onMessage(MessageSpawnCloud message, MessageContext ctx) {
-        World world = ctx.getServerHandler().playerEntity.getEntityWorld();
+        World world = ctx.getServerHandler().player.getEntityWorld();
         world.spawnParticle(EnumParticleTypes.CLOUD, message.posX, message.posY, message.posZ, 0.0D, 0.0D, 0.0D);
         return null;
     }
