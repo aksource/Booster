@@ -23,7 +23,7 @@ public class CapabilityPlayerBoosterStatusHandler {
             public void readNBT(Capability<PlayerBoosterStatusHandler> capability, PlayerBoosterStatusHandler instance, EnumFacing side, NBTBase nbt) {
                 NBTTagCompound nbtTagCompound = (NBTTagCompound) nbt;
                 instance.setBoosterSwitch(nbtTagCompound.getBoolean("boosterSwitch"));
-                instance.setBoosterPower(nbtTagCompound.getInteger("bosterPower"));
+                instance.setBoosterPower(nbtTagCompound.getInteger("boosterPower"));
             }
 
             @Override

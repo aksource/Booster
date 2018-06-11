@@ -1,19 +1,15 @@
 package Booster;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.logging.Logger;
 
@@ -27,7 +23,7 @@ public class Booster {
     public static final String MOD_NAME = "Booster";
     public static final String MOD_VERSION = "@VERSION@";
     public static final String MOD_DEPENDENCIES = "required-after:forge";
-    public static final String MOD_MC_VERSION = "[1.11,1.99.99]";
+    public static final String MOD_MC_VERSION = "[1.12,1.99.99]";
     public static final String TextureDomain = "booster:";
     public static final String Armor08_1 = "textures/armor/armor_08_1.png";
     public static final String Armor20_1 = "textures/armor/armor_20_1.png";
@@ -42,6 +38,7 @@ public class Booster {
     public static CommonProxy proxy;
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void preInit(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
@@ -51,30 +48,18 @@ public class Booster {
         config.save();
         Booster08 = new ItemBooster(ItemArmor.ArmorMaterial.IRON, 2, EntityEquipmentSlot.CHEST, BoosterType.BOOSTER_08)
                 .setRegistryName("booster08").setUnlocalizedName(TextureDomain + "Booster08").setCreativeTab(CreativeTabs.COMBAT);
-        GameRegistry.register(Booster08);
         Booster20 = new ItemBooster(ItemArmor.ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.CHEST, BoosterType.BOOSTER_20)
                 .setRegistryName("booster20").setUnlocalizedName(TextureDomain + "Booster20").setCreativeTab(CreativeTabs.COMBAT);
-        GameRegistry.register(Booster20);
         PacketHandler.init();
         CapabilityPlayerBoosterStatusHandler.register();
         livingeventhooks = new LivingEventHooks();
+        MinecraftForge.EVENT_BUS.register(new RegisterUtils());
     }
 
     @Mod.EventHandler
-    public void load(FMLInitializationEvent event) {
+    @SuppressWarnings("unused")
+    public void init(FMLInitializationEvent event) {
         proxy.registerClientInformation();
-
         MinecraftForge.EVENT_BUS.register(livingeventhooks);
-        GameRegistry.addRecipe(new ItemStack(Booster08),
-                "XRX", "XPX", "X X",
-                'X', Items.IRON_INGOT,
-                'R', Items.REPEATER,
-                'P', Blocks.PISTON);
-
-        GameRegistry.addRecipe(new ItemStack(Booster20),
-                "I I", " B ", "IDI",
-                'B', Booster08,
-                'I', Items.IRON_INGOT,
-                'D', Items.DIAMOND);
     }
 }

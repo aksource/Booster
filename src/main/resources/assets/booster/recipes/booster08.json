@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "group": "booster:booster08",
+  "pattern": [
+    "XRX", "XPX", "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "item": "booster:booster08"
+  }
+}

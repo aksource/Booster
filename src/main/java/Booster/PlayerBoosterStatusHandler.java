@@ -66,7 +66,7 @@ public interface PlayerBoosterStatusHandler {
         @Override
         public void deserializeNBT(NBTTagCompound nbt) {
             this.setBoosterSwitch(nbt.getBoolean("boosterSwitch"));
-            this.setBoosterPower(nbt.getInteger("bosterPower"));
+            this.setBoosterPower(nbt.getInteger("boosterPower"));
         }
 
         public static PlayerBoosterStatusHandler get(EntityPlayer player) {

@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "group": "booster:booster20",
+  "pattern": [
+    "I I",
+    " B ",
+    "IDI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "booster:booster08"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "booster:booster20"
+  }
+}

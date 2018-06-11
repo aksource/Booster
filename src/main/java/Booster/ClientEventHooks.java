@@ -24,6 +24,7 @@ public class ClientEventHooks {
 
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void KeyPressEvent(InputEvent.KeyInputEvent event) {
         if (ClientProxy.boostKey.isPressed()) {
             boostKeyCheck(FMLClientHandler.instance().getClientPlayerEntity());
@@ -47,6 +48,7 @@ public class ClientEventHooks {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void doPlayerClientTickEvent(TickEvent.PlayerTickEvent event) {
         if (event.side.isClient()
                 && event.phase == TickEvent.Phase.END
@@ -54,6 +56,7 @@ public class ClientEventHooks {
                 && LivingEventHooks.checkBoosterWearing(event.player)) {
             EntityPlayerSP playerSP = (EntityPlayerSP)event.player;
             PlayerBoosterStatusHandler handler = PlayerBoosterStatusHandler.PlayerBoosterStatusImpl.get(playerSP);
+            if (handler == null) return;
             boolean boosterSwitch = handler.isBoosterSwitch();
             if (boosterSwitch) {
                 int boostPower = PlayerBoosterStatusHandler.PlayerBoosterStatusImpl.get(playerSP).getBoosterPower();

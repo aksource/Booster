@@ -3,7 +3,7 @@ sourceSets.main {
     resources.srcDirs project.projectDir.name
 }
 dependencies { compile fileTree(dir: 'lib', include: '*.jar') }
-version = "1.11.2-1.4.4"
+version = "1.12-1.4.5"
 minecraft {
     // replacing stuff in the source
     replace '@VERSION@', project.version

@@ -1,5 +1,6 @@
 package Booster;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LivingEventHooks {
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onPlayerFall(LivingFallEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)event.getEntityLiving();
@@ -20,14 +22,15 @@ public class LivingEventHooks {
     }
 
     @SubscribeEvent
-    public void onAttachCapability(AttachCapabilitiesEvent.Entity event) {
-        if (event.getEntity() instanceof EntityPlayer) {
+    @SuppressWarnings("unused")
+    public void onAttachCapability(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof EntityPlayer) {
             event.addCapability(CapabilityPlayerBoosterStatusHandler.BOOSTER_STATUS, new PlayerBoosterStatusHandler.PlayerBoosterStatusImpl());
         }
     }
 
     public static boolean checkBoosterWearing (EntityPlayer player) {
         ItemStack chestArmor = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        return !player.capabilities.isCreativeMode && ((chestArmor != null && (chestArmor.getItem() instanceof ItemBooster)));
+        return !player.capabilities.isCreativeMode && ((!chestArmor.isEmpty() && (chestArmor.getItem() instanceof ItemBooster)));
     }
 }
